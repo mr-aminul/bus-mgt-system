@@ -31,4 +31,6 @@ export interface AppLayoutConfig {
   fontFamily?: string
   outerBg?: string
   contentCardBg?: string
+  /** Optional nav item at bottom of sidebar (e.g. POS) */
+  bottomNavItem?: NavItem
 }

@@ -134,12 +134,9 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     overflow: 'hidden',
     background: '#e5e7eb',
-    padding: '0.5rem',
-    boxSizing: 'border-box',
-    borderRadius: '0.75rem',
   },
   leftPanel: {
-    flex: 7,
+    flex: 7.5,
     minWidth: 0,
     padding: '2.5rem 2rem',
     ...getBackgroundStyle(assets.loginBackgroundValue),
@@ -149,9 +146,6 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '0.5rem',
     minHeight: 0,
     overflow: 'hidden',
-    borderRadius: '0.5rem',
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
   },
   leftTitle: {
     margin: 0,
@@ -168,7 +162,7 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.25,
   },
   rightPanel: {
-    flex: 3,
+    flex: 2.5,
     minWidth: 0,
     minHeight: 0,
     padding: '2.5rem 2rem',
@@ -176,9 +170,6 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     overflow: 'auto',
-    borderRadius: '0.5rem',
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
   },
   rightPanelInner: {
     flex: 1,

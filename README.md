@@ -75,9 +75,17 @@ To reuse only the auth layer in an existing React app:
 4. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in your env.
 5. Wrap your app in `<AuthProvider>` and use `useAuth()` and `<ProtectedRoute>` as needed.
 
+## Deploy to Vercel
+
+1. Push the repo to GitHub and import the project in [Vercel](https://vercel.com).
+2. Add **Environment Variables** in Vercel (Project → Settings → Environment Variables):
+   - `VITE_SUPABASE_URL` = your Supabase Project URL  
+   - `VITE_SUPABASE_ANON_KEY` = your Supabase anon key  
+3. Deploy. The app uses client-side routing; `vercel.json` is set so all routes serve `index.html`.
+
 ## Scripts
 
-- `npm run dev` — start dev server
+- `npm run dev` — start dev server (serves at **http://localhost:5173**)
 - `npm run build` — production build
 - `npm run preview` — preview production build
 

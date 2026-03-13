@@ -69,12 +69,23 @@ export function AppLayout({
 
   const pathname = location.pathname
   const title = getPageTitle(pathname) || pathname || 'App'
-  const currentNavItem = navItems
-    .filter((item) => {
-      const end = item.end ?? item.path === '/'
-      return end ? pathname === item.path : pathname === item.path || pathname.startsWith(item.path + '/')
-    })
-    .sort((a, b) => b.path.length - a.path.length)[0]
+  const currentNavItem = (() => {
+    for (const item of navItems) {
+      if (item.children?.length) {
+        const childMatch = item.children.find(
+          (c) => pathname === c.path || (c.path !== '/' && pathname.startsWith(c.path + '/'))
+        )
+        if (childMatch) return item
+        if (pathname === item.path || pathname.startsWith(item.path + '/')) return item
+      } else {
+        const end = item.end ?? item.path === '/'
+        if (end ? pathname === item.path : pathname === item.path || pathname.startsWith(item.path + '/')) {
+          return item
+        }
+      }
+    }
+    return undefined
+  })()
   const titleIcon = currentNavItem?.icon
 
   if (isFullScreen) {

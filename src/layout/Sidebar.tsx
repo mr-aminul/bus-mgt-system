@@ -12,10 +12,21 @@ function isPathUnder(parentPath: string, pathname: string): boolean {
   return pathname === parentPath || (parentPath !== '/' && pathname.startsWith(parentPath + '/'))
 }
 
+/** True if pathname is the parent path or any of its child paths (for expand/highlight). */
+function isParentOrChildActive(item: NavItem, pathname: string): boolean {
+  if (pathname === item.path) return true
+  if (item.children?.length) {
+    return item.children.some((c) => pathname === c.path || (c.path !== '/' && pathname.startsWith(c.path + '/')))
+  }
+  return isPathUnder(item.path, pathname)
+}
+
 const subLinkBaseStyle = {
   paddingRight: '0.625rem',
-  paddingTop: '0.375rem',
-  paddingBottom: '0.375rem',
+  paddingTop: '0.5rem',
+  paddingBottom: '0.5rem',
+  minHeight: '2.25rem',
+  boxSizing: 'border-box' as const,
   borderRadius: '0.5rem',
   textDecoration: 'none' as const,
   fontSize: '0.8125rem',
@@ -23,7 +34,8 @@ const subLinkBaseStyle = {
   overflow: 'hidden' as const,
   textOverflow: 'ellipsis' as const,
   whiteSpace: 'nowrap' as const,
-  display: 'block' as const,
+  display: 'flex' as const,
+  alignItems: 'center' as const,
 }
 
 interface SidebarProps {
@@ -69,7 +81,7 @@ export function Sidebar(props: SidebarProps) {
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(() =>
     new Set(
       navItems
-        .filter((item) => item.children?.length && isPathUnder(item.path, location.pathname))
+        .filter((item) => item.children?.length && isParentOrChildActive(item, location.pathname))
         .map((item) => item.path)
     )
   )
@@ -95,7 +107,7 @@ export function Sidebar(props: SidebarProps) {
     if (searchQuery.trim()) return
     navItems.forEach((item) => {
       if (!item.children?.length || item.path === '/') return
-      if (isPathUnder(item.path, pathname)) {
+      if (isParentOrChildActive(item, pathname)) {
         setExpandedPaths((prev) => (prev.has(item.path) ? prev : new Set(prev).add(item.path)))
       }
     })
@@ -126,6 +138,8 @@ export function Sidebar(props: SidebarProps) {
       justifyContent: displayCollapsed ? 'center' : 'flex-start',
       gap: displayCollapsed ? 0 : '0.625rem',
       padding: '0.5rem 0.625rem',
+      minHeight: '2.25rem',
+      boxSizing: 'border-box' as const,
       borderRadius: '0.5rem',
       textDecoration: 'none',
       fontSize: '0.8125rem',
@@ -186,7 +200,7 @@ export function Sidebar(props: SidebarProps) {
               {name}
             </div>
             {subtitle && (
-              <div style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.5625rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '0.125rem', whiteSpace: 'nowrap' }}>
+              <div style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.4375rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '0.125rem', whiteSpace: 'nowrap' }}>
                 {subtitle}
               </div>
             )}
@@ -260,7 +274,7 @@ export function Sidebar(props: SidebarProps) {
           const { icon: Icon, label, path, end, children } = item
           const isParentWithChildren = Boolean(children?.length)
           const expanded = showChildren(item)
-          const parentActive = isPathUnder(path, pathname)
+          const parentActive = isParentOrChildActive(item, pathname)
 
           const handleParentRowAction = () => {
             toggleExpanded(path)
@@ -291,11 +305,8 @@ export function Sidebar(props: SidebarProps) {
                     ...iconCell(parentActive),
                     display: 'flex',
                     alignItems: 'center',
-                    borderRadius: '0.5rem',
-                    minHeight: '2.25rem',
-                    paddingRight: displayCollapsed ? undefined : '0.375rem',
                     background: parentActive ? 'rgba(255,255,255,0.12)' : 'transparent',
-                    transition: 'background 0.12s',
+                    transition: 'background 0.12s, color 0.12s',
                     cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {

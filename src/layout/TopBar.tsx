@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
-import { Bell, ChevronDown, Search, Menu, User, Settings, LogOut } from 'lucide-react'
+import { Bell, ChevronDown, Search, Menu, User, Settings, LogOut, Ticket } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useNotifications } from '@/contexts/NotificationsContext'
@@ -499,8 +499,25 @@ export function TopBar({
   isMobile = false,
 }: TopBarProps) {
   const location = useLocation()
+  const navigate = useNavigate()
   const pathname = location.pathname
   const titleText = typeof title === 'function' ? title(pathname) : title
+
+  const posButtonStyle: React.CSSProperties = {
+    height: '2rem',
+    padding: '0 0.625rem',
+    borderRadius: '0.4375rem',
+    border: '0.0625rem solid #E5A00C',
+    background: '#FBBF24',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.375rem',
+    cursor: 'pointer',
+    flexShrink: 0,
+    fontSize: '0.8125rem',
+    fontWeight: 600,
+    color: '#78350F',
+  }
 
   if (isMobile) {
     return (
@@ -570,6 +587,15 @@ export function TopBar({
         )}
         {rightSlot ?? (
           <>
+            <button
+              type="button"
+              onClick={() => navigate('/pos')}
+              style={posButtonStyle}
+              aria-label="Sell Ticket"
+            >
+              <Ticket size={14} strokeWidth={2} />
+              <span>Sell Ticket</span>
+            </button>
             <NotificationBellDropdown />
             <ProfileDropdown
               userName={userName}
@@ -623,8 +649,8 @@ export function TopBar({
         height: '3.5rem',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 1.25rem',
-        gap: '0.75rem',
+        padding: '0 1.5rem',
+        gap: '1rem',
         flexShrink: 0,
       }}
     >
@@ -644,7 +670,7 @@ export function TopBar({
         </span>
       </div>
       {centerContent}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         {languageLabel != null && onLanguageClick && (
           <button
             onClick={onLanguageClick}
@@ -668,6 +694,15 @@ export function TopBar({
         )}
         {rightSlot ?? (
           <>
+            <button
+              type="button"
+              onClick={() => navigate('/pos')}
+              style={posButtonStyle}
+              aria-label="Sell Ticket"
+            >
+              <Ticket size={14} strokeWidth={2} />
+              <span>Sell Ticket</span>
+            </button>
             <NotificationBellDropdown />
             <ProfileDropdown
               userName={userName}

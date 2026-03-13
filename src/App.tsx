@@ -1,16 +1,23 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { AuthenticatedLayout } from '@/layout'
+import { LanguageProvider } from '@/contexts/LanguageContext'
+import { OperatorProvider } from '@/contexts/OperatorContext'
 import Login from '@/pages/Login'
 import SignUp from '@/pages/SignUp'
 import ForgotPassword from '@/pages/ForgotPassword'
-import Dashboard from '@/pages/Dashboard'
-import Reports from '@/pages/Reports'
-import Documents from '@/pages/Documents'
-import DocumentSubPage from '@/pages/DocumentSubPage'
+import { OperationsDashboard } from '@/pages/OperationsDashboard'
+import { FleetPage } from '@/pages/FleetPage'
+import { VehicleDetail } from '@/pages/VehicleDetail'
+import { RoutesPage } from '@/pages/RoutesPage'
+import { DriversPage } from '@/pages/DriversPage'
+import { CountersPage } from '@/pages/CountersPage'
+import { TicketsPage } from '@/pages/TicketsPage'
+import { ReportsPage } from '@/pages/ReportsPageBMS'
+import { SettingsPage } from '@/pages/SettingsPageBMS'
+import { CounterPOS } from '@/pages/CounterPOS'
 import Profile from '@/pages/Profile'
-import Settings from '@/pages/Settings'
 
 function App() {
   const { user, loading } = useAuth()
@@ -33,20 +40,25 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <AuthenticatedLayout />
+              <LanguageProvider>
+                <OperatorProvider>
+                  <AuthenticatedLayout />
+                </OperatorProvider>
+              </LanguageProvider>
             </ProtectedRoute>
           }
         >
-          <Route index element={<Dashboard />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="documents" element={<Outlet />}>
-            <Route index element={<Documents />} />
-            <Route path="financial-freedom" element={<DocumentSubPage title="Financial freedom" />} />
-            <Route path="life-planning" element={<DocumentSubPage title="Life planning" />} />
-            <Route path="journal" element={<DocumentSubPage title="Journal" />} />
-          </Route>
+          <Route index element={<OperationsDashboard />} />
+          <Route path="fleet" element={<FleetPage />} />
+          <Route path="fleet/:id" element={<VehicleDetail />} />
+          <Route path="routes" element={<RoutesPage />} />
+          <Route path="drivers" element={<DriversPage />} />
+          <Route path="tickets" element={<TicketsPage />} />
+          <Route path="counters" element={<CountersPage />} />
+          <Route path="reports" element={<ReportsPage />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="pos" element={<CounterPOS />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

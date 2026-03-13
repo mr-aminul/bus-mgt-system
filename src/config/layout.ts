@@ -1,49 +1,77 @@
-import { LayoutDashboard, Settings, User, FileText, BarChart3 } from 'lucide-react'
+import {
+  LayoutDashboard,
+  User,
+  BarChart3,
+  Bus,
+  Zap,
+  LayoutGrid,
+} from 'lucide-react'
 import type { AppLayoutConfig } from '@/layout'
 import { assets } from './assets'
 
 /**
- * App shell config: brand, nav items, and page titles.
- * Extend navItems and getPageTitle when you add more pages.
- * Image/logo URLs are centralized in @/config/assets.
+ * Bus Management System: brand, nav items, and page titles.
+ * Sidebar groups: Operations (routes, tickets, counters), Fleet (vehicles, drivers), Account (profile, settings).
  */
 export const layoutConfig: Omit<AppLayoutConfig, 'getPageTitle'> = {
   brand: {
-    name: 'Auth Basement',
-    subtitle: 'For Any Webapp',
-    icon: LayoutDashboard,
+    name: 'FleetOS',
+    subtitle: 'Bus Management System',
+    icon: Zap,
     logoColor: '#2CA85A',
     logoUrl: assets.logoUrl || undefined,
   },
+  fullScreenPaths: ['/pos'],
   navItems: [
     { path: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
-    { path: '/reports', label: 'Reports', icon: BarChart3, end: true },
     {
-      path: '/documents',
-      label: 'Documents',
-      icon: FileText,
+      path: '/routes',
+      label: 'Operations',
+      icon: LayoutGrid,
       end: false,
       children: [
-        { path: '/documents/financial-freedom', label: 'Financial freedom' },
-        { path: '/documents/life-planning', label: 'Life planning' },
-        { path: '/documents/journal', label: 'Journal' },
+        { path: '/routes', label: 'Routes & Trips' },
+        { path: '/tickets', label: 'Tickets & Revenue' },
+        { path: '/counters', label: 'Counters' },
       ],
     },
-    { path: '/profile', label: 'Profile', icon: User, end: true },
-    { path: '/settings', label: 'Settings', icon: Settings, end: true },
+    {
+      path: '/fleet',
+      label: 'Fleet',
+      icon: Bus,
+      end: false,
+      children: [
+        { path: '/fleet', label: 'Vehicles' },
+        { path: '/drivers', label: 'Drivers' },
+      ],
+    },
+    { path: '/reports', label: 'Reports', icon: BarChart3, end: true },
+    {
+      path: '/profile',
+      label: 'Account',
+      icon: User,
+      end: false,
+      children: [
+        { path: '/profile', label: 'Profile' },
+        { path: '/settings', label: 'Settings' },
+      ],
+    },
   ],
 }
 
 export function getPageTitle(pathname: string): string {
   const titles: Record<string, string> = {
-    '/': 'Dashboard',
+    '/': 'Operations Dashboard',
+    '/fleet': 'Fleet Management',
     '/reports': 'Reports',
-    '/documents': 'Documents',
-    '/documents/financial-freedom': 'Financial freedom',
-    '/documents/life-planning': 'Life planning',
-    '/documents/journal': 'Journal',
+    '/routes': 'Routes & Trips',
+    '/drivers': 'Drivers',
+    '/tickets': 'Tickets & Revenue',
+    '/counters': 'Counters',
     '/profile': 'Profile',
     '/settings': 'Settings',
+    '/pos': 'POS Terminal',
   }
-  return titles[pathname] ?? 'App'
+  if (pathname.startsWith('/fleet/')) return 'Vehicle Detail'
+  return titles[pathname] ?? 'Bus Management System'
 }
