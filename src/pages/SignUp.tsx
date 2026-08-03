@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { assets, getBackgroundStyle } from '@/config/assets'
+import { AuthHeroPanel } from '@/components/AuthHeroPanel'
 
 const AUTH_PANEL_CSS = `.auth-card input::placeholder { color: #9ca3af; }
 .auth-right-panel { overflow: auto; scrollbar-width: none; -ms-overflow-style: none; }
@@ -46,17 +46,13 @@ export default function SignUp() {
   return (
     <div className="auth-card" style={styles.wrapper}>
       <style>{AUTH_PANEL_CSS}</style>
-      {/* Left panel */}
-      <div style={styles.leftPanel}>
-          <h1 style={styles.leftTitle}>Get Started with Us</h1>
-          <p style={styles.leftSubtitle}>
-            Complete these easy steps to register your account.
-          </p>
-        </div>
+      <AuthHeroPanel
+        title="Get Started with Us"
+        subtitle="Complete these easy steps to register your account."
+      />
 
-        {/* Right panel */}
-        <div className="auth-right-panel" style={styles.rightPanel}>
-          <div style={styles.rightPanelInner}>
+      <div className="auth-right-panel" style={styles.rightPanel}>
+        <div style={styles.rightPanelInner}>
           <h2 style={styles.formTitle}>Sign Up</h2>
 
           <form onSubmit={handleSubmit} style={styles.form}>
@@ -145,8 +141,8 @@ export default function SignUp() {
               Login
             </Link>
           </p>
-          </div>
         </div>
+      </div>
     </div>
   )
 }
@@ -171,32 +167,6 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     overflow: 'hidden',
     background: '#e5e7eb',
-  },
-  leftPanel: {
-    flex: 7.5,
-    minWidth: 0,
-    padding: '2.5rem 2rem',
-    ...getBackgroundStyle(assets.loginBackgroundValue),
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '0.5rem',
-    minHeight: 0,
-    overflow: 'hidden',
-  },
-  leftTitle: {
-    margin: 0,
-    fontSize: '3.5rem',
-    fontWeight: 700,
-    color: '#fff',
-    lineHeight: 1.1,
-  },
-  leftSubtitle: {
-    margin: 0,
-    fontSize: '1.05rem',
-    fontWeight: 400,
-    color: 'rgba(255,255,255,0.9)',
-    lineHeight: 1.25,
   },
   rightPanel: {
     flex: 2.5,

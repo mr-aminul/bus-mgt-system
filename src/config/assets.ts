@@ -19,10 +19,9 @@ import type { CSSProperties } from 'react'
  */
 export const assets = {
   logoUrl: 'https://i.postimg.cc/G2thSSpX/Untitled-design-(4).png' as string,
-  loginBackgroundValue:
-    'https://i.postimg.cc/nzRKXNDQ/BEYOND-THE-LIMITS.png',
-  layoutBackgroundValue:
-    '#07183e',
+  /** Unused by auth screens — AuthHeroPanel uses a code-drawn abstract. Kept for API compat. */
+  loginBackgroundValue: '#040d31',
+  layoutBackgroundValue: '#07183e',
   /** Accent color: notification icon when hovered, avatar background, primary actions. */
   themePrimary: '#040D31',
   /** Color for content on themePrimary (e.g. avatar initials). */
